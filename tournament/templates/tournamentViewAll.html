@@ -1,0 +1,104 @@
+{% if auth_user %}
+    <div class="topnav">
+        <a href="/tournament">Tournaments</a>
+        {% if auth_user.usergroup == 'admin' %}
+            <a href="/user/">Users</a>
+        {% endif %}
+        <a href="/user/{{ auth_user.id }}">{{ auth_user.name }}</a>
+        <a href="/user/logout">Logout</a>
+
+    </div>
+{% else %}
+    <div class="topnav">
+        <a href="/tournament">Tournaments</a>
+        <a href="/user/login">Login</a>
+        <a href="/user/register">Register</a>
+    </div>
+{% endif %}
+
+<h1>Active Tournaments</h1>
+<table border="1">
+    <tr>
+        <td>ID</td>
+        <td>Owner ID</td>
+        <td>Name</td>
+        <td>Starting date</td>
+        <td>Max players</td>
+        <td>Status</td>
+        {% if auth_user and auth_user.usergroup == 'admin' %}
+        <td>Action</td>
+        {% endif %}
+    </tr>
+    {% for x in active_tournaments %}
+        <tr>
+            <td>{{ x.id }}</td>
+            <td>{{ x.owner_id }}</td>
+            <td><a href="{{ x.id }}">{{ x.name }}</a></td>
+            <td>{{ x.datetime }}</td>
+            <td>{{ x.max_players }}</td>
+            <td>{{ x.status }}</td>
+            {% if auth_user and auth_user.usergroup == 'admin' %}
+                <td><a href="/tournament/{{ x.id }}/delete/">delete</a></td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+</table>
+
+{% if user %}
+    <h1>Draft Tournaments</h1>
+    <table border="1">
+        <tr>
+            <td>ID</td>
+            <td>Owner ID</td>
+            <td>Name</td>
+            <td>Starting date</td>
+            <td>Max players</td>
+            <td>Status</td>
+            <td>Action</td>
+        </tr>
+        {% for x in draft_tournaments %}
+            <tr>
+                <td>{{ x.id }}</td>
+                <td>{{ x.owner_id }}</td>
+                <td><a href="{{ x.id }}">{{ x.name }}</a></td>
+                <td>{{ x.datetime }}</td>
+                <td>{{ x.max_players }}</td>
+                <td>{{ x.status }}</td>
+                <td><a href="/tournament/{{ x.id }}/delete/">delete</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+    <a href="create/">Create new tournament</a>
+
+    <h1>Historic Tournaments</h1>
+    <form action="/tournament/" method="get">
+        Between dates:
+        <td><input name="date_start" type="date"></td>
+        and:
+        <td><input name="date_end" type="date"></td>
+        <td><input type="submit" value="filter"></td>
+    </form>
+    <table border="1">
+        <tr>
+            <td>ID</td>
+            <td>Owner ID</td>
+            <td>Name</td>
+            <td>Starting date</td>
+            <td>Max players</td>
+            <td>Status</td>
+            <td>Action</td>
+        </tr>
+        {% for x in historic_tournaments %}
+            <tr>
+                <td>{{ x.id }}</td>
+                <td>{{ x.owner_id }}</td>
+                <td><a href="{{ x.id }}">{{ x.name }}</a></td>
+                <td>{{ x.datetime }}</td>
+                <td>{{ x.max_players }}</td>
+                <td>{{ x.status }}</td>
+                <td><a href="/tournament/{{ x.id }}/delete/">delete</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+{% endif %}

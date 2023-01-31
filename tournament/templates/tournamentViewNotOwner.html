@@ -1,0 +1,75 @@
+{% if auth_user %}
+    <div class="topnav">
+        <a href="/tournament">Tournaments</a>
+        {% if auth_user.usergroup == 'admin' %}
+            <a href="/user/">Users</a>
+        {% endif %}
+        <a href="/user/{{ auth_user.id }}">{{ auth_user.name }}</a>
+        <a href="/user/logout">Logout</a>
+
+    </div>
+{% else %}
+    <div class="topnav">
+        <a href="/tournament">Tournaments</a>
+        <a href="/user/login">Login</a>
+        <a href="/user/register">Register</a>
+    </div>
+{% endif %}
+
+<h1>Tournament Details</h1>
+ID:<br>
+<a>{{ tournament.id }}</a>
+<br><br>
+Name:<br>
+<a>{{ tournament.name }}</a>
+<br><br>
+Starting date:<br>
+<a>{{ tournament.datetime }}</a>
+<br><br>
+Max players:<br>
+<a>{{ tournament.max_players }}</a>
+<br><br>
+Status:<br>
+<a>{{ tournament.status }}</a>
+
+<h3>Players</h3>
+<table border="1">
+    <tr>
+        <td>ID</td>
+        <td>Name</td>
+    </tr>
+    {% for p in players %}
+        <tr>
+            <td>{{ p.id }}</td>
+            <td>{{ p.name }}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+{% if tournament.status != 'draft' %}
+    <h3>Scores</h3>
+    <table border="1">
+        <tr>
+            <td>ID</td>
+            <td>PlayerA</td>
+            <td>ScoreA</td>
+            <td>ScoreB</td>
+            <td>PlayerB</td>
+            <td>Stage</td>
+            <td>NextID</td>
+            <td>NextPosition</td>
+        </tr>
+        {% for s in scores %}
+            <tr>
+                <td>{{ s.id }}</td>
+                <td>{{ s.player_a }}</td>
+                <td>{{ s.score_a }}</td>
+                <td>{{ s.score_b }}</td>
+                <td>{{ s.player_b }}</td>
+                <td>1/{{ s.stage }}</td>
+                <td>{{ s.next_id }}</td>
+                <td>{{ s.next_position }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endif %}

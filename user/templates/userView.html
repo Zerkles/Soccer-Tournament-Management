@@ -1,0 +1,45 @@
+{% if auth_user %}
+    <div class="topnav">
+        <a href="/tournament">Tournaments</a>
+        {% if auth_user.usergroup == 'admin' %}
+            <a href="/user/">Users</a>
+        {% endif %}
+        <a href="/user/{{ auth_user.id }}">{{ auth_user.name }}</a>
+        <a href="/user/logout">Logout</a>
+
+    </div>
+{% else %}
+    <div class="topnav">
+        <a href="/tournament">Tournaments</a>
+        <a href="/user/login">Login</a>
+        <a href="/user/register">Register</a>
+    </div>
+{% endif %}
+
+
+<h1>User details</h1>
+<form action="/user/{{ user.id }}/" method="post">{% csrf_token %}
+    ID:<br>
+    <a>{{ user.id }}</a>
+    <br><br>
+    Name:<br>
+    <input name="name" value="{{ user.name }}" type="text" required>
+    <br><br>
+    Password:<br>
+    <input name="password" value="{{ user.password }}" type="password" required>
+    <br><br>
+    Email:<br>
+    <input name="email" value="{{ user.email }}" type="email" required>
+    <br><br>
+    Date of birth:<br>
+    <input name="birthday" value="{{ user.birthday|date:"Y-m-d" }}" type="date" required>
+    <br><br>
+    Usergroup:<br>
+    {% if auth_user.usergroup == 'admin' %}
+        <input name="usergroup" value="{{ user.usergroup }}" type="text" required>
+    {% else %}
+        <a>{{ user.usergroup }}</a>
+    {% endif %}
+    <br><br>
+    <input type="submit" value="Submit">
+</form>

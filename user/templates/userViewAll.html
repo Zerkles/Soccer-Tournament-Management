@@ -1,0 +1,43 @@
+{% if auth_user %}
+    <div class="topnav">
+        <a href="/tournament">Tournaments</a>
+        {% if auth_user.usergroup == 'admin' %}
+            <a href="/user/">Users</a>
+        {% endif %}
+        <a href="/user/{{ auth_user.id }}">{{ auth_user.name }}</a>
+        <a href="/user/logout">Logout</a>
+
+    </div>
+{% else %}
+    <div class="topnav">
+        <a href="/tournament">Tournaments</a>
+        <a href="/user/login">Login</a>
+        <a href="/user/register">Register</a>
+    </div>
+{% endif %}
+
+
+<h1>Users</h1>
+<table border="1">
+    <tr>
+        <td>ID</td>
+        <td>Name</td>
+        <td>Password</td>
+        <td>Email</td>
+        <td>Birthday</td>
+        <td>Usergroup</td>
+        <td>Action</td>
+    </tr>
+    {% for x in all_users %}
+        <tr>
+            <td>{{ x.id }}</td>
+            <td><a href="/user/{{ x.id }}/"> {{ x.name }}</a></td>
+            <td>{{ x.password }}</td>
+            <td>{{ x.email }}</td>
+            <td>{{ x.birthday }}</td>
+            <td>{{ x.usergroup }}</td>
+            <td><a href="/user/{{ x.id }}/delete/">delete</a></td>
+        </tr>
+    {% endfor %}
+</table>
+<a href="/user/register/">Add new</a>

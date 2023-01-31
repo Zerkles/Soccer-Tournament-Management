@@ -1,0 +1,29 @@
+{% if auth_user %}
+    <div class="topnav">
+        <a href="/tournament">Tournaments</a>
+        {% if auth_user.usergroup == 'admin' %}
+            <a href="/user/">Users</a>
+        {% endif %}
+        <a href="/user/{{ auth_user.id }}">{{ auth_user.name }}</a>
+        <a href="/user/logout">Logout</a>
+
+    </div>
+{% else %}
+    <div class="topnav">
+        <a href="/tournament">Tournaments</a>
+        <a href="/user/login">Login</a>
+        <a href="/user/register">Register</a>
+    </div>
+{% endif %}
+
+<h1>Login Form</h1>
+<form action="/user/login/" method="post">
+    {% csrf_token %}
+    Name:<br>
+    <input name="name" type="text" required>
+    <br><br>
+    Password:<br>
+    <input name="password" type="password" required>
+    <br><br>
+    <input type="submit" value="Submit">
+</form>
